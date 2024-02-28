@@ -36,15 +36,13 @@ int main(int ac, char **argv, char **env)
 			}
 			if (strcmp(str, "echo") == 0)
 			{
-				while (str != NULL)
-				{
 					str = strtok(NULL, " \n\t");
 					if (str != NULL)
 					{
 						while (env[i] != NULL)
 						{
 							found = 0;
-							env_str = strstr(env[i], str);
+							env_str = strtok(env[i], "=");
 							if (env_str == NULL)
 							{
 								free(str);
@@ -52,18 +50,28 @@ int main(int ac, char **argv, char **env)
 								perror("failed to read env");
 								exit(EXIT_FAILURE);
 							}
-							else if (env_str != NULL)
+
+							if (strcmp(env_str, str) == 0)
 							{
-								if (*env_str 
+								env_str = strtok(NULL, "\0");
+								if (env_str != NULL)
+								{
+									found = 1;
+									printf("%s=%s", str, env_str);
+									free(env_str);
+									break;
+								}
 							}
 							i++;
 						}
+					
 						if (found == 0)
 							printf("\n%s : VARIABLE NOT FOUND!", str);
+
+						free(str);					
 					}
-				}
-				free(ptr);
-				free(env_str);
+					free(ptr);
+
 			}
 			else if (strcmp(str, "exit") == 0)
 			{

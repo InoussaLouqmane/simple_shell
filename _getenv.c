@@ -68,21 +68,20 @@ int main(int ac, char **argv, char **env)
 						if (found == 0)
 							printf("\n%s : VARIABLE NOT FOUND!", str);
 
-						free(str);					
 					}
-					free(ptr);
-
 			}
 			else if (strcmp(str, "exit") == 0)
 			{
 				free(str);
 				free(ptr);
-				return (0);
+				break;
 			}
 			else
 			{
 				printf("Unknown Command\n");
 			}
 		}
+	free(str);
+	free(ptr);
 	return (0);
 }
